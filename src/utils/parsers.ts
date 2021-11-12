@@ -30,6 +30,7 @@ export function parseTags(tags: EventTags) {
 }
 
 export function parseSubInfo(subInfo: Partial<ChatSub>) {
+  const isSubGift = !!subInfo.gifter;
   const plan = Number(subInfo.plan);
 
   return {
@@ -39,9 +40,9 @@ export function parseSubInfo(subInfo: Partial<ChatSub>) {
       [params.months]: Number(subInfo.months),
       ...value(params.streak, Number(subInfo.streak)),
       ...value(params.count, Number(subInfo.gifterGiftCount)),
-      ...value(params.userId, Number(subInfo.userId)),
-      ...value(params.login, subInfo.userName),
-      ...value(params.displayName, subInfo.displayName),
+      ...value(params.userId, isSubGift && Number(subInfo.userId)),
+      ...value(params.login, isSubGift && subInfo.userName),
+      ...value(params.displayName, isSubGift && subInfo.displayName),
     },
   };
 }
