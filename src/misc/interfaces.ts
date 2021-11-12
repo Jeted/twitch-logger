@@ -19,10 +19,9 @@ export interface Log extends Document {
   [params.emotes]: Record<string, string[]>;
   [params.subInfo]: SubInfo;
   [params.duration]: number;
+  [params.membership]: Array<string>;
   [params.message]: string;
   [params.messageType]: string;
-  [params.joined]: Array<string>;
-  [params.parted]: Array<string>;
 }
 
 export interface SubInfo {

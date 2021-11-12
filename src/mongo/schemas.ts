@@ -38,17 +38,12 @@ export const logSchema = new mongoose.Schema(
     [params.emotes]: Object,
     [params.subInfo]: Object,
     [params.duration]: Number,
+    [params.membership]: {
+      default: undefined,
+      index: true,
+      type: Array,
+    },
     [params.message]: String,
-    [params.joined]: {
-      default: undefined,
-      index: true,
-      type: Array,
-    },
-    [params.parted]: {
-      default: undefined,
-      index: true,
-      type: Array,
-    },
     [params.messageType]: {
       index: true,
       type: String,
