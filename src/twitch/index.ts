@@ -2,6 +2,7 @@ import { ChatClient } from '@twurple/chat';
 import { mongo } from '../app';
 import logger from '../misc/logger';
 import { params } from '../misc/enums';
+import { pushMembership } from '../utils/membership';
 import { parseSubInfo, parseTags } from '../utils/parsers';
 
 const chat = new ChatClient({
@@ -97,10 +98,14 @@ chat.onBan(async (channel, user, msg) => {
 chat.onJoin((channel, user) => {
   if (user.includes('justinfan')) {
     logger.info(`Twitch: Connected ${channel}`);
+  } else {
+    pushMembership('join', channel, user);
   }
 });
 
-chat.onPart((channel, user) => {});
+chat.onPart((channel, user) => {
+  pushMembership('part', channel, user);
+});
 
 class Twitch {
   async connect() {

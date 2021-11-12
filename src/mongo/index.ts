@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../config';
 import logger from '../misc/logger';
+import { getUserByLogin } from '../utils/requests';
 import { channelSchema, logSchema } from './schemas';
 import type { Channel, Log } from '../misc/interfaces';
 
@@ -30,6 +31,35 @@ class Mongo {
       date: new Date(),
       ...data,
     });
+  }
+
+  async channelId(room: string) {
+    const channel = room.replace('#', '');
+    const result = await this.channels.findOne({ login: channel });
+
+    if (!result) {
+      const user = await getUserByLogin(channel);
+
+      if (user) {
+        await this.channels.updateOne(
+          {
+            userId: user.userId,
+          },
+          {
+            $set: {
+              login: user.login,
+              displayName: user.displayName,
+            },
+          }
+        );
+
+        return user.userId;
+      }
+
+      return null;
+    }
+
+    return result.userId;
   }
 }
 

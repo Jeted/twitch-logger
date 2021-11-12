@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { Document } from 'mongoose';
 import { params } from './enums';
 
@@ -40,4 +41,28 @@ export interface Channel extends Document {
   login: string;
   displayName: string;
   isLogged: boolean;
+}
+
+interface HelixUser {
+  id: string;
+  login: string;
+  display_name: string;
+  type: string;
+  broadcaster_type: string;
+  description: string;
+  profile_image_url: string;
+  offline_image_url: string;
+  view_count: number;
+  email: string;
+  created_at: Date;
+}
+
+export interface User {
+  userId: string;
+  login: string;
+  displayName: string;
+}
+
+export interface UserResponse extends AxiosResponse {
+  data: HelixUser[];
 }
