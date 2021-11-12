@@ -9,52 +9,39 @@ const mapToObject = (map: Map<string, string | string[]>) => {
   return map.size && Object.fromEntries(map);
 };
 
-export function parseTags(tags: EventTags) {
-  const messageId = tags.id;
-  const channelId = tags.channelId;
-  const userId = tags.userInfo.userId;
-  const color = tags.userInfo.color;
-  const login = tags.userInfo.userName;
-  const displayName = tags.userInfo.displayName;
-  const badges = mapToObject(tags.userInfo.badges);
-  const badgeInfo = mapToObject(tags.userInfo.badgeInfo);
-  const emotes = mapToObject(tags.emoteOffsets);
+const value = (param: string, value: any) => {
+  return value && { [param]: value };
+};
 
+export function parseTags(tags: EventTags) {
   return {
-    channelId: channelId!,
+    channelId: tags.channelId!,
     userInfo: {
-      ...(messageId && { [params.messageId]: messageId }),
-      ...(userId && { [params.userId]: Number(userId) }),
-      ...(login && { [params.login]: login }),
-      ...(displayName && { [params.displayName]: displayName }),
-      ...(color && { [params.color]: color }),
-      ...(badges && { [params.badges]: badges }),
-      ...(badgeInfo && { [params.badgeInfo]: badgeInfo }),
-      ...(emotes && { [params.emotes]: emotes }),
+      ...value(params.messageId, tags.id),
+      ...value(params.userId, Number(tags.userInfo.userId)),
+      ...value(params.login, tags.userInfo.userName),
+      ...value(params.displayName, tags.userInfo.displayName),
+      ...value(params.color, tags.userInfo.color),
+      ...value(params.badges, mapToObject(tags.userInfo.badges)),
+      ...value(params.badgeInfo, mapToObject(tags.userInfo.badgeInfo)),
+      ...value(params.emotes, mapToObject(tags.emoteOffsets)),
     },
   };
 }
 
 export function parseSubInfo(subInfo: Partial<ChatSub>) {
-  const isSubGift = !!subInfo.gifter;
-
-  const plan = subInfo.plan;
-  const months = subInfo.months;
-  const message = subInfo.message;
-  const streak = subInfo.streak;
-  const count = subInfo.gifterGiftCount;
-  const userId = isSubGift && subInfo.userId;
-  const login = isSubGift && subInfo.userName;
-  const displayName = isSubGift && subInfo.displayName;
+  const plan = Number(subInfo.plan);
 
   return {
-    [params.tier]: isNaN(Number(plan)) ? 0 : Number(plan) / 1000,
-    [params.months]: Number(months),
-    ...(message && { [params.message]: message }),
-    ...(streak && { [params.streak]: Number(streak) }),
-    ...(count && { [params.count]: Number(count) }),
-    ...(userId && { [params.userId]: Number(userId) }),
-    ...(login && { [params.login]: login }),
-    ...(displayName && { [params.displayName]: displayName }),
+    message: subInfo.message,
+    subInfo: {
+      [params.tier]: isNaN(plan) ? 0 : plan / 1000,
+      [params.months]: Number(subInfo.months),
+      ...value(params.streak, Number(subInfo.streak)),
+      ...value(params.count, Number(subInfo.gifterGiftCount)),
+      ...value(params.userId, Number(subInfo.userId)),
+      ...value(params.login, subInfo.userName),
+      ...value(params.displayName, subInfo.displayName),
+    },
   };
 }
