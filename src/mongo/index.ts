@@ -24,6 +24,13 @@ class Mongo {
   logs(channelId: string) {
     return mongoose.model<Log>(channelId, logSchema);
   }
+
+  async insertLog(channelId: string, data: Partial<Log>) {
+    await this.logs(channelId).create({
+      date: new Date(),
+      ...data,
+    });
+  }
 }
 
 export default Mongo;
