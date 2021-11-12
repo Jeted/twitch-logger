@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import config from '../config';
 import logger from '../misc/logger';
-import { channelSchema } from './schemas';
-import type { Channel } from '../misc/interfaces';
+import { channelSchema, logSchema } from './schemas';
+import type { Channel, Log } from '../misc/interfaces';
 
 class Mongo {
   public async connect() {
@@ -19,6 +19,10 @@ class Mongo {
 
   get channels() {
     return mongoose.model<Channel>('channels', channelSchema);
+  }
+
+  logs(channelId: string) {
+    return mongoose.model<Log>(channelId, logSchema);
   }
 }
 
