@@ -110,6 +110,12 @@ class Twitch {
       process.exit(1);
     }
   }
+
+  async join(channel: string) {
+    await chat.join(channel).catch(() => {
+      logger.error(`Twitch: Already joined channel`);
+    });
+  }
 }
 
 export default Twitch;
