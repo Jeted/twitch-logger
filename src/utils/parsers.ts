@@ -1,5 +1,5 @@
-import type { ChatSubGiftInfo, ChatSubInfo, UserNotice } from '@twurple/chat';
-import type { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
+import { ChatSubGiftInfo, ChatSubInfo, UserNotice } from '@twurple/chat';
+import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 import { params } from '../misc/enums';
 
 type ChatSub = ChatSubInfo & ChatSubGiftInfo;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import config from '../config';
 import logger from '../misc/logger';
-import type { User, UserResponse } from '../misc/interfaces';
+import { User, UserResponse } from '../misc/interfaces';
 
 export async function getUserByLogin(login: string): Promise<User | undefined> {
   const url = `${config.API_BASE_URL}/helix/users?login=${login}`;

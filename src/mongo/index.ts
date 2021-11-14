@@ -4,7 +4,7 @@ import logger from '../misc/logger';
 import { params } from '../misc/enums';
 import { getUserByLogin } from '../utils/requests';
 import { channelSchema, logSchema } from './schemas';
-import type { Channel, Log } from '../misc/interfaces';
+import { Channel, Log } from '../misc/interfaces';
 
 class Mongo {
   public async connect() {
