@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import config from '../config';
 import logger from '../misc/logger';
+import { params } from '../misc/enums';
 import { getUserByLogin } from '../utils/requests';
 import { channelSchema, logSchema } from './schemas';
 import type { Channel, Log } from '../misc/interfaces';
@@ -26,10 +27,11 @@ class Mongo {
     return mongoose.model<Log>(channelId, logSchema);
   }
 
-  async insertLog(channelId: string, data: Partial<Log>) {
+  async insertLog(messageType: string, channelId: string, data: Partial<Log>) {
     await this.logs(channelId).create({
       date: new Date(),
       ...data,
+      [params.messageType]: messageType,
     });
   }
 

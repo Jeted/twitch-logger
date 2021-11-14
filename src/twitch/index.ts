@@ -18,10 +18,9 @@ chat.onMessage(async (channel, user, message, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const messageType = tags.isCheer ? 'cheer' : 'chat';
 
-  await mongo.insertLog(channelId, {
+  await mongo.insertLog(messageType, channelId, {
     ...userInfo,
     [params.message]: message,
-    [params.messageType]: messageType,
   });
 });
 
@@ -29,10 +28,9 @@ chat.onSub(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const { subInfo } = parseSubInfo(chatSubInfo);
 
-  await mongo.insertLog(channelId, {
+  await mongo.insertLog('sub', channelId, {
     ...userInfo,
     [params.subInfo]: subInfo,
-    [params.messageType]: 'sub',
   });
 });
 
@@ -40,11 +38,10 @@ chat.onResub(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const { message, subInfo } = parseSubInfo(chatSubInfo);
 
-  await mongo.insertLog(channelId, {
+  await mongo.insertLog('resub', channelId, {
     ...userInfo,
     ...(message && { [params.message]: message }),
     [params.subInfo]: subInfo,
-    [params.messageType]: 'resub',
   });
 });
 
@@ -52,10 +49,9 @@ chat.onSubGift(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const { subInfo } = parseSubInfo(chatSubInfo);
 
-  await mongo.insertLog(channelId, {
+  await mongo.insertLog('subgift', channelId, {
     ...userInfo,
     [params.subInfo]: subInfo,
-    [params.messageType]: 'subgift',
   });
 });
 
@@ -79,19 +75,17 @@ chat.onMessageRemove(async (channel, messageId, tags) => {
 });
 
 chat.onTimeout(async (channel, user, duration, msg) => {
-  await mongo.insertLog(msg.channelId, {
+  await mongo.insertLog('timeout', msg.channelId, {
     [params.userId]: Number(msg.targetUserId),
     [params.login]: user,
     [params.duration]: duration,
-    [params.messageType]: 'timeout',
   });
 });
 
 chat.onBan(async (channel, user, msg) => {
-  await mongo.insertLog(msg.channelId, {
+  await mongo.insertLog('ban', msg.channelId, {
     [params.userId]: Number(msg.targetUserId),
     [params.login]: user,
-    [params.messageType]: 'ban',
   });
 });
 

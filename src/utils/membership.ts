@@ -21,8 +21,7 @@ setInterval(() => {
           const users = array.sort();
           buffer[event][channel] = [];
 
-          await mongo.insertLog(channelId, {
-            [params.messageType]: event,
+          await mongo.insertLog(event, channelId, {
             [params.membership]: users,
           });
         } else {
