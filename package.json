@@ -5,9 +5,9 @@
     "start": "node build/app.js"
   },
   "dependencies": {
+    "@discordjs/builders": "^0.8.2",
     "@twurple/auth": "^5.0.8",
     "@twurple/chat": "^5.0.8",
-    "@types/node": "^16.11.7",
     "axios": "^0.24.0",
     "dayjs": "^1.10.7",
     "discord.js": "^13.3.1",
@@ -16,6 +16,7 @@
     "pino-pretty": "^7.2.0"
   },
   "devDependencies": {
+    "@types/node": "^16.11.7",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "ts-node": "^10.4.0",
