@@ -39,6 +39,19 @@ export async function loggerCommand(i: CommandInteraction) {
         });
         break;
       case 'part':
+        if (channel) {
+          if (channel.isLogged) {
+            await mongo.channels.updateOne({ userId: user.userId }, { $set: { isLogged: false } });
+            return twitch.part(user.login).then(() => {
+              i.editReply({
+                content: `Parted #${user.login}`,
+              });
+            });
+          }
+        }
+        i.editReply({
+          content: `Channel #${user.login} is not logged.`,
+        });
         break;
     }
   } else {

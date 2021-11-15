@@ -91,14 +91,18 @@ chat.onBan(async (channel, user, msg) => {
 
 chat.onJoin((channel, user) => {
   if (user.includes('justinfan')) {
-    logger.info(`Twitch: Connected ${channel}`);
+    logger.info(`Twitch: Joined ${channel}`);
   } else {
     pushMembership('join', channel, user);
   }
 });
 
 chat.onPart((channel, user) => {
-  pushMembership('part', channel, user);
+  if (user.includes('justinfan')) {
+    logger.info(`Twitch: Parted ${channel}`);
+  } else {
+    pushMembership('part', channel, user);
+  }
 });
 
 class Twitch {
@@ -115,6 +119,10 @@ class Twitch {
     await chat.join(channel).catch(() => {
       logger.error(`Twitch: Already joined channel`);
     });
+  }
+
+  async part(channel: string) {
+    chat.part(channel);
   }
 }
 
