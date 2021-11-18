@@ -2,6 +2,7 @@ import { ChatClient } from '@twurple/chat';
 import { mongo } from '../app';
 import logger from '../misc/logger';
 import { params } from '../misc/enums';
+import { objProp } from '../utils/helpers';
 import { pushMembership } from '../utils/membership';
 import { parseSubInfo, parseTags } from '../utils/parsers';
 
@@ -20,6 +21,7 @@ chat.onMessage(async (channel, user, message, tags) => {
 
   await mongo.insertLog(messageType, channelId, {
     ...userInfo,
+    ...objProp(params.bits, tags.bits),
     [params.message]: message,
   });
 });
@@ -40,7 +42,7 @@ chat.onResub(async (channel, user, chatSubInfo, tags) => {
 
   await mongo.insertLog('resub', channelId, {
     ...userInfo,
-    ...(message && { [params.message]: message }),
+    ...objProp(params.message, message),
     [params.subInfo]: subInfo,
   });
 });

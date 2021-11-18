@@ -1,6 +1,7 @@
 export enum params {
   badges = 'b',
   badgeInfo = 'bi',
+  bits = 'bt',
   color = 'c',
   count = 'co',
   displayName = 'dn',

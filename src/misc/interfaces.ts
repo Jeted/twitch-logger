@@ -19,6 +19,7 @@ export interface Log extends Document {
   [params.badgeInfo]: Record<string, string>;
   [params.emotes]: Record<string, string[]>;
   [params.subInfo]: SubInfo;
+  [params.bits]: number;
   [params.duration]: number;
   [params.membership]: Array<string>;
   [params.message]: string;

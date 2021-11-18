@@ -37,6 +37,7 @@ export const logSchema = new mongoose.Schema(
     [params.badgeInfo]: Object,
     [params.emotes]: Object,
     [params.subInfo]: Object,
+    [params.bits]: Number,
     [params.duration]: Number,
     [params.membership]: {
       default: undefined,
