@@ -22,10 +22,6 @@ export const logSchema = new mongoose.Schema(
       required: true,
       type: Date,
     },
-    [params.messageId]: {
-      type: String,
-      default: mongoose.Types.ObjectId,
-    },
     [params.userId]: {
       index: true,
       type: Number,

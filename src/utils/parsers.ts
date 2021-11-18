@@ -10,7 +10,6 @@ export function parseTags(tags: EventTags) {
   return {
     channelId: tags.channelId!,
     userInfo: {
-      ...prop(params.messageId, tags.id),
       [params.userId]: Number(tags.userInfo.userId),
       [params.login]: tags.userInfo.userName,
       [params.displayName]: tags.userInfo.displayName,

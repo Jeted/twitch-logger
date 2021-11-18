@@ -10,7 +10,6 @@ export enum params {
   login = 'l',
   membership = 'ms',
   message = 'm',
-  messageId = '_id',
   messageType = 'mt',
   months = 'mo',
   streak = 's',

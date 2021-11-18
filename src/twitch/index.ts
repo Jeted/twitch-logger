@@ -58,21 +58,23 @@ chat.onSubGift(async (channel, user, chatSubInfo, tags) => {
 });
 
 chat.onMessageRemove(async (channel, messageId, tags) => {
-  const result = await mongo.channels.findOne({
-    login: channel.replace('#', ''),
-  });
+  const channelId = await mongo.channelId(channel);
 
-  if (result) {
-    await mongo.logs(result.userId).updateOne(
-      {
-        [params.messageId]: messageId,
-      },
-      {
-        $set: {
-          [params.messageType]: 'deleted',
+  if (channelId) {
+    await mongo
+      .logs(channelId)
+      .findOneAndUpdate(
+        {
+          [params.login]: tags.userName,
+          [params.message]: tags.params.message,
         },
-      }
-    );
+        {
+          $set: {
+            [params.messageType]: 'deleted',
+          },
+        }
+      )
+      .sort({ $natural: -1 });
   }
 });
 
