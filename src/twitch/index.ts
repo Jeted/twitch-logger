@@ -5,9 +5,10 @@ import { params } from '../misc/enums';
 import { objProp } from '../utils/helpers';
 import { pushMembership } from '../utils/membership';
 import { parseSubInfo, parseTags } from '../utils/parsers';
+import { loggedChannels as channels } from '../utils/channels';
 
 const chat = new ChatClient({
-  channels: ['jeted'],
+  channels,
   logger: {
     emoji: false,
     minLevel: 'info',
