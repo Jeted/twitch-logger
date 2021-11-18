@@ -49,7 +49,7 @@ chat.onResub(async (channel, user, chatSubInfo, tags) => {
 
 chat.onSubGift(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
-  const { subInfo } = parseSubInfo(chatSubInfo);
+  const { subInfo } = parseSubInfo(chatSubInfo, user);
 
   await mongo.insertLog('subgift', channelId, {
     ...userInfo,

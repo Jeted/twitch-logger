@@ -21,7 +21,7 @@ export function parseTags(tags: EventTags) {
   };
 }
 
-export function parseSubInfo(subInfo: Partial<ChatSub>) {
+export function parseSubInfo(subInfo: Partial<ChatSub>, login?: string) {
   const isSubGift = !!subInfo.gifter;
 
   return {
@@ -29,10 +29,10 @@ export function parseSubInfo(subInfo: Partial<ChatSub>) {
     subInfo: {
       [params.tier]: Number(subInfo.plan) / 1000 || 0,
       [params.months]: Number(subInfo.months),
-      ...prop(params.login, isSubGift && subInfo.userName),
       ...objProp(params.streak, Number(subInfo.streak)),
       ...objProp(params.count, Number(subInfo.gifterGiftCount)),
       ...objProp(params.userId, isSubGift && Number(subInfo.userId)),
+      ...objProp(params.login, isSubGift && login),
       ...objProp(params.displayName, isSubGift && subInfo.displayName),
     },
   };
