@@ -1,4 +1,5 @@
 import { ChatClient } from '@twurple/chat';
+import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 import { mongo } from '../app';
 import logger from '../misc/logger';
 import { params } from '../misc/enums';
@@ -16,16 +17,18 @@ const chat = new ChatClient({
   requestMembershipEvents: true,
 });
 
-chat.onMessage(async (channel, user, message, tags) => {
+const handlePrivMsg = async (event: string, message: string, tags: TwitchPrivateMessage) => {
   const { channelId, userInfo } = parseTags(tags);
-  const messageType = tags.isCheer ? 'cheer' : 'chat';
-
-  await mongo.insertLog(messageType, channelId, {
+  await mongo.insertLog(event, channelId, {
     ...userInfo,
     ...objProp(params.bits, tags.bits),
     [params.message]: message,
   });
-});
+};
+
+chat.onAction((...data) => handlePrivMsg('action', data[2], data[3]));
+
+chat.onMessage((...data) => handlePrivMsg('chat', data[2], data[3]));
 
 chat.onSub(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
