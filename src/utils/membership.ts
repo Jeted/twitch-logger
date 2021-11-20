@@ -1,5 +1,5 @@
 import { mongo } from '../app';
-import logger from '../misc/logger';
+import { logger } from './logger';
 import { params } from '../misc/enums';
 
 interface MembershipBuffer {

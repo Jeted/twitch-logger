@@ -91,3 +91,4 @@ typings/
 .history
 build
 config.ts
+yarn.lock

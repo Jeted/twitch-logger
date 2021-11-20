@@ -1,8 +1,8 @@
 import { ChatClient } from '@twurple/chat';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
 import { mongo } from '../app';
-import logger from '../misc/logger';
 import { params } from '../misc/enums';
+import { logger } from '../utils/logger';
 import { objProp } from '../utils/helpers';
 import { pushMembership } from '../utils/membership';
 import { parseSubInfo, parseTags } from '../utils/parsers';

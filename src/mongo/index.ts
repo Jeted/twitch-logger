@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import config from '../config';
-import logger from '../misc/logger';
+import { logger } from '../utils/logger';
 import { params } from '../misc/enums';
 import { getUserByLogin } from '../utils/requests';
 import { channelSchema, logSchema } from './schemas';

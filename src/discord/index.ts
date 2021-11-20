@@ -1,7 +1,7 @@
 import { Client, Guild, Intents } from 'discord.js';
 import { SlashCommandBuilder, SlashCommandSubcommandBuilder } from '@discordjs/builders';
 import config from '../config';
-import logger from '../misc/logger';
+import { logger } from '../utils/logger';
 import { loggerCommand } from './command';
 
 const client = new Client({

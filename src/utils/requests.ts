@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { URL } from 'url';
 import config from '../config';
-import logger from '../misc/logger';
+import { logger } from './logger';
 import { User, UserResponse } from '../misc/interfaces';
 
 export async function getUserByLogin(login: string): Promise<User | undefined> {
