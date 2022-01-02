@@ -1,12 +1,10 @@
 import axios from 'axios';
-import { URL } from 'url';
 import config from '../config';
 import { logger } from './logger';
 import { User, UserResponse } from '../misc/interfaces';
 
 export async function getUserByLogin(login: string): Promise<User | undefined> {
-  const url = new URL(`${config.API_BASE_URL}/helix/users`);
-  url.searchParams.append('login', login);
+  const url = `${config.API_BASE_URL}/helix/users?login=${login}`;
 
   try {
     const { data } = await axios.get<UserResponse>(url.toString());
@@ -25,14 +23,10 @@ export async function getUserByLogin(login: string): Promise<User | undefined> {
 }
 
 export async function getUsersById(array: string[]): Promise<User[]> {
-  const url = new URL(`${config.API_BASE_URL}/helix/users`);
-
-  for (const userId of array) {
-    url.searchParams.append('id', userId);
-  }
+  const url = `${config.API_BASE_URL}/helix/users?id=${array.join('&id=')}`;
 
   try {
-    const { data } = await axios.get<UserResponse>(url.toString());
+    const { data } = await axios.get<UserResponse>(url);
     const users = data.data;
 
     if (!users.length) return [];
