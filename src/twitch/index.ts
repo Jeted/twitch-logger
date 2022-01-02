@@ -1,6 +1,6 @@
 import { ChatClient } from '@twurple/chat';
 import { TwitchPrivateMessage } from '@twurple/chat/lib/commands/TwitchPrivateMessage';
-import { mongo } from '../app';
+import Mongo from '../mongo';
 import { params } from '../misc/enums';
 import { logger } from '../utils/logger';
 import { objProp } from '../utils/helpers';
@@ -19,7 +19,7 @@ const chat = new ChatClient({
 
 const handlePrivMsg = async (event: string, message: string, tags: TwitchPrivateMessage) => {
   const { channelId, userInfo } = parseTags(tags);
-  await mongo.insertLog(event, channelId, {
+  await Mongo.insertLog(event, channelId, {
     ...userInfo,
     ...objProp(params.bits, tags.bits),
     [params.message]: message,
@@ -34,7 +34,7 @@ chat.onSub(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const { subInfo } = parseSubInfo(chatSubInfo);
 
-  await mongo.insertLog('sub', channelId, {
+  await Mongo.insertLog('sub', channelId, {
     ...userInfo,
     [params.subInfo]: subInfo,
   });
@@ -44,7 +44,7 @@ chat.onResub(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const { message, subInfo } = parseSubInfo(chatSubInfo);
 
-  await mongo.insertLog('resub', channelId, {
+  await Mongo.insertLog('resub', channelId, {
     ...userInfo,
     ...objProp(params.message, message),
     [params.subInfo]: subInfo,
@@ -55,22 +55,24 @@ chat.onSubGift(async (channel, user, chatSubInfo, tags) => {
   const { channelId, userInfo } = parseTags(tags);
   const { subInfo } = parseSubInfo(chatSubInfo, user);
 
-  await mongo.insertLog('subgift', channelId, {
+  await Mongo.insertLog('subgift', channelId, {
     ...userInfo,
     [params.subInfo]: subInfo,
   });
 });
 
 chat.onMessageRemove(async (channel, messageId, tags) => {
-  const channelId = await mongo.channelId(channel);
+  const channelId = await Mongo.channelId(channel);
 
   if (channelId) {
-    await mongo
-      .logs(channelId)
+    await Mongo.logs(channelId)
       .findOneAndUpdate(
         {
           [params.login]: tags.userName,
           [params.message]: tags.params.message,
+          [params.messageType]: {
+            $nin: ['deleted'],
+          },
         },
         {
           $set: {
@@ -83,7 +85,7 @@ chat.onMessageRemove(async (channel, messageId, tags) => {
 });
 
 chat.onTimeout(async (channel, user, duration, msg) => {
-  await mongo.insertLog('timeout', msg.channelId, {
+  await Mongo.insertLog('timeout', msg.channelId, {
     [params.userId]: Number(msg.targetUserId),
     [params.login]: user,
     [params.duration]: duration,
@@ -91,7 +93,7 @@ chat.onTimeout(async (channel, user, duration, msg) => {
 });
 
 chat.onBan(async (channel, user, msg) => {
-  await mongo.insertLog('ban', msg.channelId, {
+  await Mongo.insertLog('ban', msg.channelId, {
     [params.userId]: Number(msg.targetUserId),
     [params.login]: user,
   });
@@ -134,4 +136,4 @@ class Twitch {
   }
 }
 
-export default Twitch;
+export default new Twitch();

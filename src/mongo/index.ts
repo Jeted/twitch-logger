@@ -65,4 +65,4 @@ class Mongo {
   }
 }
 
-export default Mongo;
+export default new Mongo();

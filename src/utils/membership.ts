@@ -1,4 +1,4 @@
-import { mongo } from '../app';
+import Mongo from '../mongo';
 import { logger } from './logger';
 import { params } from '../misc/enums';
 
@@ -15,13 +15,13 @@ setInterval(() => {
   Object.entries(buffer).forEach(([event, channels]) => {
     Object.entries(channels).forEach(async ([channel, array]) => {
       if (array.length) {
-        const channelId = await mongo.channelId(channel);
+        const channelId = await Mongo.channelId(channel);
 
         if (channelId) {
           const users = array.sort();
           buffer[event][channel] = [];
 
-          await mongo.insertLog(event, channelId, {
+          await Mongo.insertLog(event, channelId, {
             [params.membership]: users,
           });
         } else {

@@ -48,4 +48,4 @@ class Discord {
   }
 }
 
-export default Discord;
+export default new Discord();

@@ -1,8 +1,8 @@
-import { mongo } from '../app';
+import Mongo from '../mongo';
 import { getUsersById } from './requests';
 
 export async function loggedChannels() {
-  const channels = await mongo.channels.find({ isLogged: true });
+  const channels = await Mongo.channels.find({ isLogged: true });
   const userIds = channels.map((channel) => channel.userId);
 
   const logins: string[] = [];
@@ -16,7 +16,7 @@ export async function loggedChannels() {
       const userRename = user.login !== channel.login;
 
       if (userRename) {
-        await mongo.channels.updateOne(
+        await Mongo.channels.updateOne(
           {
             userId: user.userId,
           },
